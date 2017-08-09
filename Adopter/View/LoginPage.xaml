@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    x:Class="Adopter.LoginPage">
+
+    <Grid BackgroundColor="#127ac7">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Label
+            Grid.Row="0"
+            Text="Adopt a Dog"
+            HorizontalOptions="Center"
+            FontSize="30"
+            FontAttributes="Bold"
+            TextColor="White"
+            VerticalTextAlignment="End"/>
+         <Label
+            Grid.Row="1"
+            Text="Save a life"
+            HorizontalOptions="Center"
+            FontSize="18"
+            TextColor="White"/>
+        <Button
+            Grid.Row="2"
+            BackgroundColor="#1dabf0"
+            Text="Login"
+            TextColor="White"
+            Margin="15,-15"
+            Clicked="SignInButtonClicked"/>
+        <Button
+            Grid.Row="3"
+            BackgroundColor="#1dabf0"
+            Text="Register"
+            TextColor="White"
+            Margin="15"/>
+    </Grid>
+</ContentPage>
+

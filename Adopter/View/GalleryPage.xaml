@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    x:Class="Adopter.View.GalleryPage"
+    BackgroundColor="#127ac7">
+
+
+    <AbsoluteLayout>
+        <Image x:Name="image"
+            AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All" />
+        <ActivityIndicator Color="White" IsRunning="{Binding Source={x:Reference image}, Path=IsLoading}"
+            AbsoluteLayout.LayoutBounds="0.5, 0.05, 100, 50" AbsoluteLayout.LayoutFlags="PositionProportional"/>
+        <Button BackgroundColor="#1dabf0" Image="if_DoubleChevronLeft_1031524" Clicked="PreviousClicked" TextColor="White"
+            AbsoluteLayout.LayoutBounds="0.05, 0.05, 100, 50" AbsoluteLayout.LayoutFlags="PositionProportional" />
+        <Button BackgroundColor="#1dabf0"  Text="Yes" Clicked="NextClicked" TextColor="White"
+            AbsoluteLayout.LayoutBounds="0.95, 0.05, 100, 50" AbsoluteLayout.LayoutFlags="PositionProportional" />
+    </AbsoluteLayout>
+    
+</ContentPage>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 namespace dogfunctions.Model
 {
     public class Parameters
@@ -41,5 +42,6 @@ namespace dogfunctions.Model
         public string dogName { get; set; }
         public string dogDescription { get; set; }
         public Parameters parameters { get; set; }
+        public List<string> photoUrls { get; set; }
     }
 }

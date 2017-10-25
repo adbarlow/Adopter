@@ -1,32 +1,28 @@
-using System;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Host;
-using System.Net;
-using HtmlAgilityPack;
-using System.Threading.Tasks;
-using System.Net.Http;
-using System.Linq;
+﻿using System;
 using System.Collections.Generic;
-using Adopter.Common.Models;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using HtmlAgilityPack;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.Http;
+using Microsoft.Azure.WebJobs.Host;
 
-namespace Adopter.Functions
+namespace dogfunctions.Functions
 {
-    public static class DogTimeScraperFunction
+    public static class DogScraperFunction
     {
-        [FunctionName("DogTimeScraperFunction")]
-        public static async Task Run([TimerTrigger("0 * * * * *")]TimerInfo myTimer, TraceWriter log)
-        {
-            await GetBreed("http://dogtime.com/dog-breeds/english-springer-spaniel");
-            log.Info($"C# Timer trigger function executed at: {DateTime.Now}");
-        }
-
-        static async Task<BreedModel> GetBreed(string dogBreedUrl)
+        [FunctionName(nameof(DogScraperFunction))]
+        public static async Task<HttpResponseMessage> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetDogDetails/{name}")]HttpRequestMessage req, string name, TraceWriter log)
         {
             HttpClient client = new HttpClient();
 
-            
+            //string name = req.GetQueryNameValuePairs()
+                //.FirstOrDefault(q => string.Compare(q.Key, "breed", true) == 0)
+                //.Value;
 
-            string html = await client.GetStringAsync(dogBreedUrl);
+            string html = await client.GetStringAsync($"http://dogtime.com/dog-breeds/{name}");
 
             HtmlDocument doc = new HtmlDocument();
             doc.LoadHtml(html);
@@ -58,20 +54,23 @@ namespace Adopter.Functions
                                      .Select(x => x.Attributes["class"].Value.Last().ToString());
 
             Dictionary<string, string> result = new Dictionary<string, string>();
+            var finalResult = new Dictionary<string, object>();
 
-            result.Add("dogName", dogName);
-            result.Add("dogDescription", dogDesc);
-
-            //result.Add("temp",scores);
+            finalResult.Add("dogName", dogName);
+            finalResult.Add("dogDescription", dogDesc);
 
             for (int i = 0; i < parameters.Count(); i++)
-                if (result.ContainsKey(parameters.ElementAt(i)))
-                    result.Add(parameters.ElementAt(i) + "1", scores.ElementAt(i));
-                else
+            {
+                if (!result.ContainsKey(parameters.ElementAt(i)))
+                    //  result.Add(parameters.ElementAt(i)+"1", scores.ElementAt(i));
                     result.Add(parameters.ElementAt(i), scores.ElementAt(i));
+            }
 
-            return new BreedModel();
+            finalResult.Add("parameters", result);
+
+            return req.CreateResponse(HttpStatusCode.OK, finalResult);
+
         }
+        
     }
 }
-
